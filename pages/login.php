@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/config.php';
 $message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username_or_email = $conn->real_escape_string($_POST['username_or_email']);
+$username_or_email = $_POST['username_or_email'];
     $password = $_POST['password'];
 
     

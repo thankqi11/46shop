@@ -2,11 +2,15 @@
 require_once __DIR__ . '/../includes/config.php';
 
 
-$product_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
-
-
-$sql = "SELECT * FROM products WHERE id = $product_id";
-$result = $conn->query($sql);
+// product.php
+$product_id = isset($_GET['id']) ? intval($_GET['id']) : 1; 
+// Sử dụng Prepared Statement
+$stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
+$stmt->bind_param("i", $product_id); // "i" cho integer
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
+$stmt->close();
 $product = $result->fetch_assoc();
 
 if (!$product) {
