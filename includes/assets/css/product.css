@@ -1,10 +1,9 @@
-/* Base Styles */
 :root {
-  --primary-bg: #8c8c4a; /* Main olive green background */
-  --dark-bg: #4d2626; /* Dark red/brown sidebar & header */
-  --light-bg: #f8f8f8; /* White/light gray main content area */
-  --media-box-bg: #d9d9d9; /* Gray image placeholder */
-  --button-dark: #666666; /* Default button color */
+  --primary-bg: #8c8c4a;
+  --dark-bg: #4d2626;
+  --light-bg: #f8f8f8;
+  --media-box-bg: #d9d9d9;
+  --button-dark: #666666;
 }
 
 * {
@@ -22,11 +21,10 @@ body {
 .container {
   max-width: 1200px;
   margin: auto;
-  background-color: var(--light-bg); /* The main white box area */
+  background-color: var(--light-bg);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Header Styling */
 .header {
   background-color: var(--dark-bg);
   padding: 10px 20px;
@@ -40,7 +38,7 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #990000; /* Red circle */
+  background-color: #990000;
 }
 
 .search-bar {
@@ -57,7 +55,7 @@ body {
 .search-bar button {
   width: 30px;
   height: 30px;
-  background-color: var(--light-bg); /* White button next to search */
+  background-color: var(--light-bg);
   border: none;
   margin-left: 5px;
 }
