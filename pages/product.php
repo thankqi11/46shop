@@ -1,55 +1,176 @@
-<?php
-require_once __DIR__ . '/../includes/config.php';
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản Phẩm - Shop Đồ Thể Thao</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+        }
+        .product-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+        }
+        .ad-box {
+            min-height: 100px; /* Chiều cao tối thiểu cho Quảng cáo nhỏ */
+        }
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-areas: 
+                    "sidebar" 
+                    "ad-main" 
+                    "ad-right" 
+                    "products";
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-stone-900">
 
+    <!-- Top Header (Dark Red/Brown) -->
+    <header class="bg-red-950 p-4 shadow-xl">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+            
+            <!-- Logo/Placeholder -->
+            <div class="flex items-center space-x-4">
+                <div class="w-16 h-16 bg-red-700 rounded-full border-2 border-red-500">
+                    <!-- Logo Placeholder -->
+                </div>
+                <!-- Login/Register Link (Top Right) -->
+                <a href="login.php" class="block md:hidden text-white font-semibold hover:text-red-300">
+                    Đăng kí / Đăng nhập
+                </a>
+            </div>
 
-// product.php
-$product_id = isset($_GET['id']) ? intval($_GET['id']) : 1; 
-// Sử dụng Prepared Statement
-$stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
-$stmt->bind_param("i", $product_id); // "i" cho integer
-$stmt->execute();
-$result = $stmt->get_result();
-$product = $result->fetch_assoc();
-$stmt->close();
-if (!$product) {
-    header('Location: 404.php');
-    exit();
-}
+            <!-- Search Bar -->
+            <div class="flex-grow max-w-xl mx-4 w-full md:w-auto">
+                <div class="flex rounded-lg overflow-hidden shadow-inner bg-gray-300">
+                    <input type="text" placeholder="Thanh tìm kiếm" 
+                           class="w-full p-3 text-lg bg-transparent focus:outline-none placeholder-gray-600 text-stone-900">
+                    <button class="bg-stone-900 text-white p-3 px-6 hover:bg-stone-700 transition duration-150">
+                        <!-- Icon Placeholder -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                    <!-- Small White Box Placeholder from image -->
+                    <div class="w-10 bg-white border-l border-gray-400"></div>
+                </div>
+            </div>
 
-include '../includes/header.php'; 
-?>
-
-<main class="main-content">
-  <?php include '../includes/sidebar.php'; ?>
-
-  <section class="product-details">
-    <div class="product-media-container">*Hình ảnh sản phẩm <?php echo htmlspecialchars($product['name']); ?></div>
-    <div class="product-info">
-      <h1 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h1>
-
-      <div class="size-selection">
-        <p>Size:</p>
-        <div class="size-options">
-          <?php
-          $sizes = explode(',', $product['size_options']); 
-          foreach ($sizes as $size) {
-              echo '<span class="size-option">' . htmlspecialchars(trim($size)) . '</span>';
-          }
-          ?>
+            <!-- Login/Register Link (Desktop Top Right) -->
+            <a href="login.php" class="hidden md:block text-white font-semibold hover:text-red-300 p-2 border border-white/20 rounded-lg transition duration-200">
+                Đăng kí / Đăng nhập
+            </a>
         </div>
-      </div>
-      <div class="quantity-selector">...</div>
-      <div class="action-buttons">...</div>
+    </header>
 
-      <h2 class="details-heading">Chi tiết sản phẩm</h2>
-      <div class="details-content">
-        <p><?php echo nl2br(htmlspecialchars($product['details'])); ?></p>
-      </div>
+    <!-- Main Content Grid -->
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[180px_1fr_200px] gap-4 p-4">
+        
+        <!-- Left Sidebar (Navigation) -->
+        <aside class="space-y-4 bg-red-950/90 p-4 rounded-xl md:p-0 md:bg-transparent">
+            <!-- Navigation Items -->
+            <nav class="space-y-3">
+                <a href="#" class="block bg-red-800 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-150 shadow-md">Giày</a>
+                <a href="#" class="block bg-red-800 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-150 shadow-md">Quần</a>
+                <a href="#" class="block bg-red-800 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-150 shadow-md">Áo</a>
+                <a href="#" class="block bg-red-800 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-150 shadow-md">Mũ</a>
+                <a href="#" class="block bg-red-800 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-150 shadow-md">Phụ Kiện</a>
+            </nav>
+            
+            <!-- Contact Info -->
+            <div class="pt-6 text-white text-sm">
+                <p class="font-bold">Thông tin Liên Lạc</p>
+                <p>0522 222 333</p>
+            </div>
+        </aside>
+
+        <!-- Center Content -->
+        <main class="space-y-4">
+            <!-- Main Advertisement Area (Red Box) -->
+            <div class="bg-red-700 text-white p-12 text-center rounded-xl shadow-lg h-48 md:h-64 flex items-center justify-center">
+                <p class="text-3xl font-bold">Quảng cáo Lớn</p>
+            </div>
+
+            <!-- Product Listing Area (Light Grey/Green Background) -->
+            <div class="bg-gray-200 p-6 rounded-xl shadow-inner space-y-6">
+                <h2 class="text-2xl font-bold text-stone-800 mb-4 border-b-2 border-gray-400 pb-2">Các Sản Phẩm Nổi Bật</h2>
+                
+                <!-- Product Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Product Card A -->
+                    <div class="product-card bg-white rounded-xl overflow-hidden text-center">
+                        <div class="bg-green-600 text-white p-3 font-semibold text-lg">Sản phẩm A</div>
+                        <div class="p-4 space-y-3">
+                            <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg">
+                                <!-- Image Placeholder -->
+                            </div>
+                            <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 500.000 VNĐ</div>
+                            <a href="#" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
+                        </div>
+                    </div>
+
+                    <!-- Product Card B -->
+                    <div class="product-card bg-white rounded-xl overflow-hidden text-center">
+                        <div class="bg-green-600 text-white p-3 font-semibold text-lg">Sản Phẩm B</div>
+                        <div class="p-4 space-y-3">
+                            <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg">
+                                <!-- Image Placeholder -->
+                            </div>
+                            <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 850.000 VNĐ</div>
+                            <a href="#" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
+                        </div>
+                    </div>
+
+                    <!-- Product Card C -->
+                    <div class="product-card bg-white rounded-xl overflow-hidden text-center">
+                        <div class="bg-green-600 text-white p-3 font-semibold text-lg">Sản Phẩm C</div>
+                        <div class="p-4 space-y-3">
+                            <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg">
+                                <!-- Image Placeholder -->
+                            </div>
+                            <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 1.200.000 VNĐ</div>
+                            <a href="#" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer Text -->
+                <p class="text-center text-stone-600 pt-6 italic text-lg">Shop quần áo gì cũng có mua hết ở đây</p>
+            </div>
+        </main>
+
+        <!-- Right Sidebar (Small Ads) -->
+        <aside class="space-y-4">
+            <!-- Small Ad 1 (Dark Brown/Red) -->
+            <div class="ad-box bg-red-800 text-white p-4 text-center rounded-xl shadow-lg flex items-center justify-center h-32">
+                <p class="font-semibold">Quảng cáo 1</p>
+            </div>
+            <!-- Small Ad 2 (Dark Brown/Red) -->
+            <div class="ad-box bg-red-800 text-white p-4 text-center rounded-xl shadow-lg flex items-center justify-center h-32">
+                <p class="font-semibold">Quảng cáo 2</p>
+            </div>
+            <!-- Additional Space/Ad Placeholder -->
+            <div class="hidden md:block ad-box bg-red-950/70 text-white p-4 text-center rounded-xl shadow-lg h-32">
+                <p class="font-semibold">Quảng cáo 3</p>
+            </div>
+        </aside>
     </div>
-  </section>
-</main>
 
-<?php 
-// footer.php chứa đóng </main>, </body>, và </html>
-include '../includes/footer.php'; 
+    <!-- Overall Footer (Simple) -->
+    <footer class="bg-red-950 text-white text-center p-4 mt-6">
+        <p>© 2025 Shop Đồ Thể Thao. Tất cả quyền được bảo lưu.</p>
+    </footer>
+</body>
+</html>
+<?php
+// Đây là nơi bạn có thể thêm logic xử lý PHP để tải dữ liệu sản phẩm, quản lý phiên, v.v.
+// echo "Logic PHP sẽ được đặt ở đây.";
 ?>

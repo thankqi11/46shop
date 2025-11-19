@@ -1,55 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập - Shop Bán Đồ Thể Thao</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Sử dụng font Inter cho thẩm mỹ chung */
+        body { font-family: 'Inter', sans-serif; background-color: #333; }
+    </style>
+</head>
+<body class="min-h-screen bg-stone-900 flex flex-col">
+    <!-- Header/Title Bar (Dark Brown/Black) -->
+    <header class="bg-red-950 text-white shadow-lg p-5">
+        <h1 class="text-3xl font-bold text-center">Shop Bán Đồ Thể Thao</h1>
+    </header>
+
+    <!-- Login Form Area (Centered) -->
+    <main class="flex flex-grow items-center justify-center p-4">
+        <div class="w-full max-w-sm p-8 rounded-xl shadow-2xl bg-purple-100/70 border border-purple-200">
+            <h2 class="text-3xl font-extrabold text-stone-900 mb-6 text-center">Login</h2>
+
+            <!-- Form -->
+            <form action="product.php" method="POST" class="space-y-6">
+                <!-- Username/Email Field -->
+                <input type="text" placeholder="Tên đăng nhập hoặc Email" required 
+                       class="w-full p-3 bg-white/70 border-none rounded-lg focus:ring-red-600 focus:border-red-600 text-lg placeholder-stone-600">
+                
+                <!-- Password Field -->
+                <input type="password" placeholder="Mật khẩu" required 
+                       class="w-full p-3 bg-white/70 border-none rounded-lg focus:ring-red-600 focus:border-red-600 text-lg placeholder-stone-600">
+                
+                <!-- Buttons/Links Container -->
+                <div class="flex justify-between items-center pt-4">
+                    <!-- Login Button -->
+                    <button type="submit" 
+                            class="text-lg font-semibold text-white bg-red-800 hover:bg-red-700 py-2 px-6 rounded-full shadow-md transition duration-200">
+                        đăng nhập
+                    </button>
+                    
+                    <!-- Forgot Password Link -->
+                    <a href="#" class="text-stone-700 hover:text-red-700 text-lg underline">
+                        quên mật khẩu
+                    </a>
+                </div>
+            </form>
+
+            <!-- Link to Register -->
+            <div class="mt-8 text-center">
+                <p class="text-stone-700">Chưa có tài khoản? 
+                    <a href="register.php" class="text-red-700 font-semibold hover:text-red-900 underline">Đăng ký ngay</a>
+                </p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
 <?php
-
-require_once __DIR__ . '/../includes/config.php';
-$message = '';
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-$username_or_email = $_POST['username_or_email'];
-    $password = $_POST['password'];
-
-    
-    $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ? OR email = ?"); 
-    $stmt->bind_param("ss", $username_or_email, $username_or_email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 1) {
-        $user = $result->fetch_assoc();
-        if (password_verify($password, $user['password'])) {
-            $message = "Đăng nhập thành công! Đang chuyển hướng...";
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['logged_in'] = true;
-            header("refresh:2; url=index.php");
-            exit(); 
-        } else {
-            $message = "Lỗi: Mật khẩu không chính xác.";
-        }
-    } else {
-        $message = "Lỗi: Tên đăng nhập không tồn tại.";
-    }
-    $stmt->close();
-}
-
-include '../includes/header.php'; 
-?>
-
-<main class="login-page-content">
-  <?php if ($message): ?>
-    <div class="message-box success"><?php echo htmlspecialchars($message); ?></div>
-  <?php endif; ?>
-
-  <h1>Đăng Nhập</h1>
-  <form id="login-form" method="POST" action="login.php">
-    <div class="input-field">
-      <input type="text" name="username_or_email" placeholder="Tên đăng nhập / Email" class="login-input" required />
-    </div>
-    <div class="input-field">
-      <input type="password" name="password" placeholder="Mật khẩu" class="login-input" required />
-    </div>
-    <button type="submit" class="btn-login">Đăng Nhập</button>
-  </form>
-</main>
-
-<?php 
-include '../includes/footer.php'; 
+// Đây là nơi bạn có thể thêm logic xử lý PHP cho việc đăng nhập (ví dụ: xác thực người dùng)
+// echo "Logic PHP sẽ được đặt ở đây.";
 ?>
