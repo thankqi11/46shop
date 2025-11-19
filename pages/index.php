@@ -33,6 +33,11 @@
     </style>
 </head>
 <body class="min-h-screen bg-stone-900">
+    
+<?php
+session_start();
+$is_logged_in = isset($_SESSION['user_id']);
+?>
 
     <!-- Top Header (Dark Red/Brown) -->
     <header class="bg-red-950 p-4 shadow-xl">
@@ -43,16 +48,22 @@
                 <div class="w-16 h-16 bg-red-700 rounded-full border-2 border-red-500">
                     <!-- Logo Placeholder -->
                 </div>
-                <!-- Login/Register Link (Top Right) -->
-                <a href="login.php" class="block md:hidden text-white font-semibold hover:text-red-300">
-                    Đăng kí / Đăng nhập
-                </a>
+                <!-- Login/Register Link (Top Right - Mobile Only) -->
+                <?php if ($is_logged_in): ?>
+                    <a href="logout.php" class="block md:hidden text-white font-semibold hover:text-red-300">
+                        Đăng xuất
+                    </a>
+                <?php else: ?>
+                    <a href="login.php" class="block md:hidden text-white font-semibold hover:text-red-300">
+                        Đăng kí / Đăng nhập
+                    </a>
+                <?php endif; ?>
             </div>
 
-            <!-- Search Bar -->
-            <div class="flex-grow max-w-xl mx-4 w-full md:w-auto">
+            <!-- Search Bar (Đã Cập Nhật cho tính năng Gợi ý) -->
+            <div class="flex-grow max-w-xl mx-4 w-full md:w-auto relative"> <!-- Thêm relative ở đây -->
                 <div class="flex rounded-lg overflow-hidden shadow-inner bg-gray-300">
-                    <input type="text" placeholder="Thanh tìm kiếm" 
+                    <input type="text" id="search-input" placeholder="Thanh tìm kiếm" onkeyup="showSuggestions(this.value)"
                            class="w-full p-3 text-lg bg-transparent focus:outline-none placeholder-gray-600 text-stone-900">
                     <button class="bg-stone-900 text-white p-3 px-6 hover:bg-stone-700 transition duration-150">
                         <!-- Icon Placeholder -->
@@ -61,12 +72,23 @@
                     <!-- Small White Box Placeholder from image -->
                     <div class="w-10 bg-white border-l border-gray-400"></div>
                 </div>
+                
+                <!-- Search Suggestions Dropdown -->
+                <div id="suggestions-box" class="absolute z-10 w-[90%] md:w-[80%] mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto hidden left-0 right-0 mx-auto">
+                    <!-- Suggestions will be inserted here by JavaScript -->
+                </div>
             </div>
 
-            <!-- Login/Register Link (Desktop Top Right) -->
-            <a href="login.php" class="hidden md:block text-white font-semibold hover:text-red-300 p-2 border border-white/20 rounded-lg transition duration-200">
-                Đăng kí / Đăng nhập
-            </a>
+            <!-- Auth Links (Desktop Only) -->
+            <?php if ($is_logged_in): ?>
+                <a href="logout.php" class="hidden md:block text-white font-semibold hover:text-red-300 p-2 border border-white/20 rounded-lg transition duration-200">
+                    Đăng xuất
+                </a>
+            <?php else: ?>
+                <a href="login.php" class="hidden md:block text-white font-semibold hover:text-red-300 p-2 border border-white/20 rounded-lg transition duration-200">
+                    Đăng kí / Đăng nhập
+                </a>
+            <?php endif; ?>
         </div>
     </header>
 
@@ -105,41 +127,39 @@
                 <!-- Product Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     
-                    <!-- Product Card A -->
+                    <!-- Product Card A (Quần) -->
                     <div class="product-card bg-white rounded-xl overflow-hidden text-center">
-                        <div class="bg-green-600 text-white p-3 font-semibold text-lg">Sản phẩm A</div>
+                        <div class="bg-green-600 text-white p-3 font-semibold text-lg">Quần Thể Thao</div>
                         <div class="p-4 space-y-3">
-                            <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg">
-                                <!-- Image Placeholder -->
+                            <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg overflow-hidden">
+                                <!-- ĐÃ CẬP NHẬT TÊN FILE ẢNH -->
+                                <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f301c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=320&h=320&q=80" alt="Quần Thể Thao" class="w-full h-full object-cover">
                             </div>
                             <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 500.000 VNĐ</div>
-                            <!-- Đã sửa liên kết: trỏ đến product_detail.php -->
                             <a href="product_detail.php?id=A" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
                         </div>
                     </div>
 
-                    <!-- Product Card B -->
+                    <!-- Product Card B (Áo) -->
                     <div class="product-card bg-white rounded-xl overflow-hidden text-center">
-                        <div class="bg-green-600 text-white p-3 font-semibold text-lg">Sản Phẩm B</div>
+                        <div class="bg-green-600 text-white p-3 font-semibold text-lg">Áo Thun Thể Thao</div>
                         <div class="p-4 space-y-3">
-                            <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg">
-                                <!-- Image Placeholder -->
+                            <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1620012294975-f93539169607?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=320&h=320&q=80" alt="Áo Thun Thể Thao" class="w-full h-full object-cover">
                             </div>
                             <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 850.000 VNĐ</div>
-                            <!-- Đã sửa liên kết: trỏ đến product_detail.php -->
                             <a href="product_detail.php?id=B" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
                         </div>
                     </div>
 
-                    <!-- Product Card C -->
+                    <!-- Product Card C (Mũ) -->
                     <div class="product-card bg-white rounded-xl overflow-hidden text-center">
-                        <div class="bg-green-600 text-white p-3 font-semibold text-lg">Sản Phẩm C</div>
+                        <div class="bg-green-600 text-white p-3 font-semibold text-lg">Mũ Lưỡi Trai</div>
                         <div class="p-4 space-y-3">
-                            <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg">
-                                <!-- Image Placeholder -->
+                            <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1563294373-cf6a1f0a2893?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=320&h=320&q=80" alt="Mũ Lưỡi Trai" class="w-full h-full object-cover">
                             </div>
                             <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 1.200.000 VNĐ</div>
-                            <!-- Đã sửa liên kết: trỏ đến product_detail.php -->
                             <a href="product_detail.php?id=C" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
                         </div>
                     </div>
@@ -171,9 +191,78 @@
     <footer class="bg-red-950 text-white text-center p-4 mt-6">
         <p>© 2025 Shop Đồ Thể Thao. Tất cả quyền được bảo lưu.</p>
     </footer>
+    
+    <!-- JavaScript for Search Suggestions -->
+    <script>
+        // Danh sách sản phẩm giả định để mô phỏng tìm kiếm
+        const products = [
+            "Áo thun thể thao",
+            "Áo khoác dù",
+            "Áo polo cotton",
+            "Quần short tập gym",
+            "Quần dài jogger",
+            "Quần bò rách",
+            "Giày chạy bộ Nike",
+            "Giày bóng rổ",
+            "Mũ lưỡi trai đen",
+            "Phụ kiện dây đeo tay"
+        ];
+
+        function showSuggestions(searchTerm) {
+            const box = document.getElementById('suggestions-box');
+            
+            // Xóa khoảng trắng và chuyển sang chữ thường để tìm kiếm không phân biệt chữ hoa/thường
+            const term = searchTerm.trim().toLowerCase();
+            
+            if (term.length === 0) {
+                box.classList.add('hidden');
+                return;
+            }
+
+            // Lọc danh sách sản phẩm
+            const filteredProducts = products.filter(product => 
+                product.toLowerCase().includes(term)
+            );
+
+            // Tạo HTML cho các gợi ý
+            let html = '';
+            if (filteredProducts.length > 0) {
+                html = filteredProducts.map(product => `
+                    <a href="#" class="block p-3 hover:bg-gray-100 text-stone-800 border-b border-gray-100 last:border-b-0" 
+                       onclick="selectSuggestion('${product.replace(/'/g, "\\'")}')">
+                        ${product}
+                    </a>
+                `).join('');
+                box.innerHTML = html;
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+        
+        // Hàm này được gọi khi người dùng nhấp vào một gợi ý
+        function selectSuggestion(productName) {
+            document.getElementById('search-input').value = productName;
+            document.getElementById('suggestions-box').classList.add('hidden');
+            
+            // THỰC HIỆN TÌM KIẾM SAU KHI CHỌN (Ví dụ: chuyển hướng đến trang tìm kiếm)
+            // Trong dự án thực, bạn sẽ chuyển hướng đến trang search.php?query=productName
+            console.log("Tìm kiếm sản phẩm: " + productName);
+            // window.location.href = "search.php?query=" + encodeURIComponent(productName);
+        }
+
+        // Ẩn hộp gợi ý khi nhấp chuột ra ngoài
+        document.addEventListener('click', function(event) {
+            const searchContainer = document.querySelector('.relative > .flex');
+            const box = document.getElementById('suggestions-box');
+            if (searchContainer && !searchContainer.contains(event.target) && !box.contains(event.target)) {
+                box.classList.add('hidden');
+            }
+        });
+
+    </script>
 </body>
 </html>
 <?php
-// Đây là nơi bạn có thể thêm logic xử lý PHP để tải dữ liệu sản phẩm, quản lý phiên, v.v.
-// echo "Logic PHP sẽ được đặt ở đây.";
+// Không cần thêm logic PHP nào khác ở đây.
 ?>

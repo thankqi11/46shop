@@ -21,14 +21,14 @@
         <div class="w-full max-w-sm p-8 rounded-xl shadow-2xl bg-purple-100/70 border border-purple-200">
             <h2 class="text-3xl font-extrabold text-stone-900 mb-6 text-center">Login</h2>
 
-            <!-- Form: Trỏ đến Trang Chủ (index.php) sau khi đăng nhập thành công -->
-            <form action="index.php" method="POST" class="space-y-6">
+            <!-- Form: Trỏ đến chính nó (hoặc file xử lý) để kiểm tra đăng nhập -->
+            <form action="login.php" method="POST" class="space-y-6">
                 <!-- Username/Email Field -->
-                <input type="text" placeholder="Tên đăng nhập hoặc Email" required 
+                <input type="text" name="username" placeholder="Tên đăng nhập hoặc Email" required 
                        class="w-full p-3 bg-white/70 border-none rounded-lg focus:ring-red-600 focus:border-red-600 text-lg placeholder-stone-600">
                 
                 <!-- Password Field -->
-                <input type="password" placeholder="Mật khẩu" required 
+                <input type="password" name="password" placeholder="Mật khẩu" required 
                        class="w-full p-3 bg-white/70 border-none rounded-lg focus:ring-red-600 focus:border-red-600 text-lg placeholder-stone-600">
                 
                 <!-- Buttons/Links Container -->
@@ -57,6 +57,26 @@
 </body>
 </html>
 <?php
-// Đây là nơi bạn có thể thêm logic xử lý PHP cho việc đăng nhập (ví dụ: xác thực người dùng)
-// echo "Logic PHP sẽ được đặt ở đây.";
+// BẮT ĐẦU PHIÊN (SESSION)
+session_start();
+
+// PHẦN XỬ LÝ ĐĂNG NHẬP GIẢ ĐỊNH
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // --- Giả định Đăng nhập thành công (Trong dự án thực tế, bạn sẽ kiểm tra DB ở đây) ---
+    if ($username && $password) {
+        // Đặt biến session để đánh dấu người dùng đã đăng nhập
+        $_SESSION['user_id'] = 'user_123';
+        $_SESSION['username'] = $username; 
+
+        // Chuyển hướng về trang chủ
+        header("Location: index.php");
+        exit();
+    } else {
+        // Hiển thị thông báo lỗi nếu cần
+        // echo "<p style='color: red; text-align: center;'>Tên đăng nhập hoặc mật khẩu không đúng.</p>";
+    }
+}
 ?>
