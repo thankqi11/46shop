@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sản Phẩm - Shop Đồ Thể Thao</title>
+    <title>Trang Chủ - Shop Đồ Thể Thao</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { 
@@ -113,7 +113,8 @@
                                 <!-- Image Placeholder -->
                             </div>
                             <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 500.000 VNĐ</div>
-                            <a href="#" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
+                            <!-- Đã sửa liên kết: trỏ đến product_detail.php -->
+                            <a href="product_detail.php?id=A" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
                         </div>
                     </div>
 
@@ -125,7 +126,8 @@
                                 <!-- Image Placeholder -->
                             </div>
                             <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 850.000 VNĐ</div>
-                            <a href="#" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
+                            <!-- Đã sửa liên kết: trỏ đến product_detail.php -->
+                            <a href="product_detail.php?id=B" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
                         </div>
                     </div>
 
@@ -137,7 +139,8 @@
                                 <!-- Image Placeholder -->
                             </div>
                             <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 1.200.000 VNĐ</div>
-                            <a href="#" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
+                            <!-- Đã sửa liên kết: trỏ đến product_detail.php -->
+                            <a href="product_detail.php?id=C" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>

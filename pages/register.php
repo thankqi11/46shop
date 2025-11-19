@@ -19,7 +19,7 @@
     <main class="flex flex-grow items-center justify-center p-4">
         <div class="w-full max-w-lg p-10 rounded-xl shadow-2xl bg-purple-100/70 border border-purple-200">
 
-            <!-- Form -->
+            <!-- Form: Trỏ đến Trang Đăng nhập (login.php) sau khi đăng ký thành công -->
             <form action="login.php" method="POST" class="space-y-6">
                 <!-- Input Group: Tên đăng ký -->
                 <div class="flex items-center space-x-4">
