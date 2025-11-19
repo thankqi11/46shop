@@ -117,6 +117,7 @@ $is_logged_in = isset($_SESSION['user_id']);
         <main class="space-y-4">
             <!-- Main Advertisement Area (Red Box) -->
             <div class="bg-red-700 text-white p-12 text-center rounded-xl shadow-lg h-48 md:h-64 flex items-center justify-center">
+                <img src="banner-sale-12_1695182579.webp" >
                 <p class="text-3xl font-bold">Quảng cáo Lớn</p>
             </div>
 
@@ -132,10 +133,9 @@ $is_logged_in = isset($_SESSION['user_id']);
                         <div class="bg-green-600 text-white p-3 font-semibold text-lg">Quần Thể Thao</div>
                         <div class="p-4 space-y-3">
                             <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg overflow-hidden">
-                                <!-- ĐÃ CẬP NHẬT TÊN FILE ẢNH -->
-                                <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f301c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=320&h=320&q=80" alt="Quần Thể Thao" class="w-full h-full object-cover">
+                                <img src="images/Quan-the-thao.jpg">
                             </div>
-                            <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 500.000 VNĐ</div>
+                            <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 150.000 VNĐ</div>
                             <a href="product_detail.php?id=A" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
                         </div>
                     </div>
@@ -145,9 +145,9 @@ $is_logged_in = isset($_SESSION['user_id']);
                         <div class="bg-green-600 text-white p-3 font-semibold text-lg">Áo Thun Thể Thao</div>
                         <div class="p-4 space-y-3">
                             <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1620012294975-f93539169607?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=320&h=320&q=80" alt="Áo Thun Thể Thao" class="w-full h-full object-cover">
+                                <img src="images/Ao-the_thao.png">
                             </div>
-                            <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 850.000 VNĐ</div>
+                            <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 200.000 VNĐ</div>
                             <a href="product_detail.php?id=B" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
                         </div>
                     </div>
@@ -157,9 +157,9 @@ $is_logged_in = isset($_SESSION['user_id']);
                         <div class="bg-green-600 text-white p-3 font-semibold text-lg">Mũ Lưỡi Trai</div>
                         <div class="p-4 space-y-3">
                             <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1563294373-cf6a1f0a2893?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=320&h=320&q=80" alt="Mũ Lưỡi Trai" class="w-full h-full object-cover">
+                                <img src="images/Mu-the-thao.jpg">
                             </div>
-                            <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 1.200.000 VNĐ</div>
+                            <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 150.000 VNĐ</div>
                             <a href="product_detail.php?id=C" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
                         </div>
                     </div>
