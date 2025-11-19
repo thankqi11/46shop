@@ -1,8 +1,7 @@
 </main> 
     
-    <script src="/shopthethao/assets/js/login.js"></script>
-    <script src="/shopthethao/assets/js/dangki.js"></script>
-    <script src="/shopthethao/assets/js/trangchitiet.js"></script>
-
-    </div> </body>
+<script src="../../assets/js/login.js"></script>
+<script src="../../assets/js/register.js"></script>
+<script src="../../assets/js/product.js"></script>
+     </body>
 </html>

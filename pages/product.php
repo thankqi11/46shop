@@ -11,8 +11,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 $stmt->close();
-$product = $result->fetch_assoc();
-
 if (!$product) {
     header('Location: 404.php');
     exit();

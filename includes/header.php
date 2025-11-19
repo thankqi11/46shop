@@ -7,10 +7,11 @@ session_start();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang chi tiết sản phẩm</title>
-<link rel="stylesheet" href="/shopthethao/assets/css/login.css" />
-<link rel="stylesheet" href="/shopthethao/assets/css/register.css" />
-<link rel="stylesheet" href="/shopthethao/assets/css/product.css" /> 
- </head>
+    
+<link rel="stylesheet" href="../assets/css/login.css" />
+<link rel="stylesheet" href="../assets/css/register.css" />
+<link rel="stylesheet" href="../assets/css/product.css" /> 
+</head>
   <body>
     <div class="container">
       <header class="header">
