@@ -117,8 +117,8 @@ $is_logged_in = isset($_SESSION['user_id']);
         <main class="space-y-4">
             <!-- Main Advertisement Area (Red Box) -->
             <div class="bg-red-700 text-white p-12 text-center rounded-xl shadow-lg h-48 md:h-64 flex items-center justify-center">
-                <img src="banner-sale-12_1695182579.webp" >
-                <p class="text-3xl font-bold">Quảng cáo Lớn</p>
+                <img src="images/banner-chinh.jpg" >
+                
             </div>
 
             <!-- Product Listing Area (Light Grey/Green Background) -->
@@ -173,16 +173,16 @@ $is_logged_in = isset($_SESSION['user_id']);
         <!-- Right Sidebar (Small Ads) -->
         <aside class="space-y-4">
             <!-- Small Ad 1 (Dark Brown/Red) -->
-            <div class="ad-box bg-red-800 text-white p-4 text-center rounded-xl shadow-lg flex items-center justify-center h-32">
-                <p class="font-semibold">Quảng cáo 1</p>
+            <div class="ad-box bg-red-800 text-white p-1 text-center rounded-xl shadow-lg flex items-center justify-center h-32">
+                <img src="images/1_3.jpg">
             </div>
             <!-- Small Ad 2 (Dark Brown/Red) -->
-            <div class="ad-box bg-red-800 text-white p-4 text-center rounded-xl shadow-lg flex items-center justify-center h-32">
-                <p class="font-semibold">Quảng cáo 2</p>
+            <div class="ad-box bg-red-800 text-white p-1 text-center rounded-xl shadow-lg flex items-center justify-center h-32">
+                <img src="images/banner-phu.jpg">
             </div>
             <!-- Additional Space/Ad Placeholder -->
-            <div class="hidden md:block ad-box bg-red-950/70 text-white p-4 text-center rounded-xl shadow-lg h-32">
-                <p class="font-semibold">Quảng cáo 3</p>
+            <div class="hidden md:block ad-box bg-red-950/70 text-white p-1 text-center rounded-xl shadow-lg h-32">
+                <img src="images/2.jpg">
             </div>
         </aside>
     </div>

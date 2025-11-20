@@ -55,25 +55,119 @@
         }
     </style>
     <script>
-        function selectSize(element) {
+        // Chọn size
+        function selectSize(element, sizeValue) {
             // Remove 'selected' class from all size options
             document.querySelectorAll('.size-option').forEach(el => {
                 el.classList.remove('selected', 'border-red-700', 'bg-red-100');
             });
             // Add 'selected' class to the clicked element
             element.classList.add('selected', 'border-red-700', 'bg-red-100');
+            // Cập nhật giá trị size vào input ẩn
+            document.getElementById('selected-size').value = sizeValue;
         }
 
+        // Khởi tạo trạng thái size khi trang tải xong
         document.addEventListener('DOMContentLoaded', () => {
-            // Select the first size option by default
             const firstSize = document.querySelector('.size-option');
             if (firstSize) {
-                selectSize(firstSize);
+                // Chọn size đầu tiên và cập nhật giá trị
+                selectSize(firstSize, firstSize.getAttribute('data-size'));
             }
         });
     </script>
 </head>
 <body class="min-h-screen bg-stone-900">
+<?php
+session_start();
+$is_logged_in = isset($_SESSION['user_id']);
+
+// --- Dữ liệu sản phẩm giả định (thường lấy từ Database) ---
+$products = [
+    'A' => [
+        'name' => 'Quần Thể Thao Cao Cấp',
+        'price' => 500000,
+        'price_format' => '500.000 VNĐ',
+        'desc' => 'Quần short tập luyện chuyên nghiệp, chất liệu co giãn 4 chiều, thoáng khí, phù hợp cho gym và chạy bộ.',
+        'image' => 'images/quan_the_thao.jpg',
+        'sizes' => ['S', 'M', 'L', 'XL']
+    ],
+    'B' => [
+        'name' => 'Áo Thun Thể Thao Coolmax',
+        'price' => 850000,
+        'price_format' => '850.000 VNĐ',
+        'desc' => 'Áo thun công nghệ Coolmax giúp thấm hút mồ hôi cực nhanh, giữ cơ thể luôn khô thoáng. Thiết kế thời trang, năng động.',
+        'image' => 'images/ao_thun_the_thao.jpg',
+        'sizes' => ['M', 'L', 'XL']
+    ],
+    'C' => [
+        'name' => 'Mũ Lưỡi Trai Logo Thêu',
+        'price' => 1200000,
+        'price_format' => '1.200.000 VNĐ',
+        'desc' => 'Mũ lưỡi trai phong cách cổ điển, chất liệu cotton dày dặn, logo thêu tinh tế. Bảo vệ khỏi ánh nắng khi luyện tập ngoài trời.',
+        'image' => 'images/mu_luoi_trai.jpg',
+        'sizes' => ['Freesize']
+    ]
+];
+
+$product_id = isset($_GET['id']) ? $_GET['id'] : null;
+$current_product = null;
+if ($product_id && isset($products[$product_id])) {
+    $current_product = $products[$product_id];
+    $current_product['id'] = $product_id; // Thêm ID vào mảng
+} else {
+    $current_product = [
+        'id' => null,
+        'name' => 'Sản Phẩm Không Tìm Thấy',
+        'price' => 0,
+        'price_format' => '---',
+        'desc' => 'Xin lỗi, sản phẩm này hiện không có sẵn hoặc đã bị xóa.',
+        'image' => 'https://placehold.co/320x320/cccccc/333333?text=404+Not+Found',
+        'sizes' => []
+    ];
+}
+
+// --- LOGIC THÊM SẢN PHẨM VÀO GIỎ HÀNG (Session) ---
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart']) && $current_product['id']) {
+    // 1. Kiểm tra đăng nhập trước khi cho phép thêm vào giỏ
+    if (!$is_logged_in) {
+        header("Location: login.php");
+        exit();
+    }
+    
+    // 2. Lấy dữ liệu từ form
+    $item_id = $current_product['id'];
+    $quantity = max(1, (int)($_POST['quantity'] ?? 1));
+    $size = $_POST['selected_size'] ?? ($current_product['sizes'][0] ?? 'N/A');
+
+    // 3. Tạo khóa duy nhất cho sản phẩm (kết hợp ID và Size)
+    $cart_item_key = $item_id . '_' . $size;
+
+    // 4. Khởi tạo giỏ hàng nếu chưa có
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
+
+    // 5. Lấy thông tin đầy đủ của sản phẩm
+    $item_details = $current_product;
+    $item_details['size'] = $size;
+    $item_details['qty'] = $quantity;
+
+    // 6. Thêm/Cập nhật vào giỏ hàng Session
+    if (isset($_SESSION['cart'][$cart_item_key])) {
+        // Nếu sản phẩm đã tồn tại, tăng số lượng
+        $_SESSION['cart'][$cart_item_key]['qty'] += $quantity;
+    } else {
+        // Nếu là sản phẩm mới, thêm vào giỏ
+        $_SESSION['cart'][$cart_item_key] = $item_details;
+    }
+
+    // 7. Chuyển hướng đến trang Giỏ hàng
+    header("Location: products_list.php");
+    exit();
+}
+// KẾT THÚC LOGIC PHP
+?>
 
     <!-- Top Header (Dark Red/Brown) -->
     <header class="bg-red-950 p-4 shadow-xl">
@@ -101,12 +195,20 @@
 
             <!-- Auth Links -->
             <div class="flex space-x-2">
-                <a href="register.php" class="text-white font-semibold hover:text-red-300 p-2 text-sm border border-white/20 rounded-lg transition duration-200">
-                    Đăng ký
-                </a>
-                <a href="login.php" class="text-white font-semibold hover:text-red-300 p-2 text-sm border border-white/20 rounded-lg transition duration-200">
-                    Đăng nhập
-                </a>
+                <?php if ($is_logged_in): ?>
+                    <!-- Nút Đăng xuất nếu đã đăng nhập -->
+                    <a href="logout.php" class="text-white font-semibold hover:text-red-300 p-2 text-sm border border-white/20 rounded-lg transition duration-200">
+                        Đăng xuất
+                    </a>
+                <?php else: ?>
+                    <!-- Nút Đăng ký và Đăng nhập nếu chưa đăng nhập -->
+                    <a href="register.php" class="text-white font-semibold hover:text-red-300 p-2 text-sm border border-white/20 rounded-lg transition duration-200">
+                        Đăng ký
+                    </a>
+                    <a href="login.php" class="text-white font-semibold hover:text-red-300 p-2 text-sm border border-white/20 rounded-lg transition duration-200">
+                        Đăng nhập
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </header>
@@ -137,59 +239,76 @@
             
             <!-- Left Column: Image and Details -->
             <div class="w-full lg:w-2/3 space-y-4">
-                <div class="product-image-box h-80 flex items-center justify-center rounded-lg shadow-md">
-                    <p class="text-lg font-semibold">*Hình ảnh sản phẩm A</p>
+                <div class="product-image-box h-80 flex items-center justify-center rounded-lg shadow-md overflow-hidden">
+                    <!-- Ảnh sản phẩm được tải động từ mảng PHP -->
+                    <img src="<?php echo $current_product['image']; ?>" alt="<?php echo $current_product['name']; ?>" class="w-full h-full object-cover">
                 </div>
                 <h3 class="text-xl font-bold text-stone-800 border-b pb-2">Chi tiết sản phẩm</h3>
-                <p class="text-sm text-gray-700">Đây là khu vực mô tả chi tiết về sản phẩm A, bao gồm chất liệu, xuất xứ, tính năng nổi bật, và hướng dẫn sử dụng. Sản phẩm này là mẫu mới nhất trong bộ sưu tập Thu Đông 2025.</p>
+                <!-- Mô tả được điền động -->
+                <p class="text-sm text-gray-700"><?php echo $current_product['desc']; ?></p>
+                
+                <!-- Mô tả chi tiết thêm -->
                 <ul class="list-disc list-inside text-sm text-gray-700 pl-4">
-                    <li>Chất liệu: Cotton cao cấp, thoáng khí.</li>
-                    <li>Màu sắc: Đỏ, Xanh, Đen.</li>
+                    <li>Chất liệu: Tùy theo sản phẩm (Mô phỏng).</li>
+                    <li>Màu sắc: Tùy theo sản phẩm (Mô phỏng).</li>
                     <li>Bảo hành: 12 tháng chính hãng.</li>
                 </ul>
             </div>
             
             <!-- Right Column: Options and Actions -->
             <div class="w-full lg:w-1/3 space-y-6 pt-4 lg:pt-0">
-                <h2 class="text-2xl font-extrabold text-stone-900 border-b pb-2">Sản Phẩm A</h2>
-                <p class="text-xl font-bold text-red-700">Giá: 500.000 VNĐ</p>
+                <!-- Tên sản phẩm được điền động -->
+                <h2 class="text-2xl font-extrabold text-stone-900 border-b pb-2"><?php echo $current_product['name']; ?></h2>
+                <!-- Giá sản phẩm được điền động -->
+                <p class="text-xl font-bold text-red-700">Giá: <?php echo $current_product['price_format']; ?></p>
 
-                <!-- Size Selection -->
-                <div class="space-y-2">
-                    <p class="font-semibold text-stone-700">Size:</p>
-                    <div class="flex space-x-2">
-                        <div class="size-option" onclick="selectSize(this)">S</div>
-                        <div class="size-option" onclick="selectSize(this)">M</div>
-                        <div class="size-option" onclick="selectSize(this)">L</div>
-                        <div class="size-option" onclick="selectSize(this)">XL</div>
+                <!-- Form THÊM VÀO GIỎ HÀNG -->
+                <form action="product_detail.php?id=<?php echo $product_id; ?>" method="POST" class="space-y-6">
+                    <input type="hidden" name="add_to_cart" value="1">
+                    <input type="hidden" id="selected-size" name="selected_size" value="">
+
+                    <!-- Size Selection -->
+                    <div class="space-y-2">
+                        <p class="font-semibold text-stone-700">Size:</p>
+                        <div class="flex space-x-2">
+                            <!-- Vòng lặp để hiển thị Size động -->
+                            <?php foreach ($current_product['sizes'] as $size): ?>
+                                <div class="size-option" data-size="<?php echo $size; ?>" onclick="selectSize(this, '<?php echo $size; ?>')"><?php echo $size; ?></div>
+                            <?php endforeach; ?>
+                            <?php if (empty($current_product['sizes'])): ?>
+                                <p class="text-sm text-gray-500">Không áp dụng size</p>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Quantity Control -->
-                <div class="space-y-2">
-                    <p class="font-semibold text-stone-700">Số lượng:</p>
-                    <div class="flex items-center">
-                        <button class="qty-btn" onclick="this.nextElementSibling.value = Math.max(1, parseInt(this.nextElementSibling.value) - 1)">-</button>
-                        <input type="number" value="1" min="1" class="qty-input focus:outline-none" style="text-align: center;">
-                        <button class="qty-btn" onclick="this.previousElementSibling.value = parseInt(this.previousElementSibling.value) + 1">+</button>
+                    <!-- Quantity Control -->
+                    <div class="space-y-2">
+                        <p class="font-semibold text-stone-700">Số lượng:</p>
+                        <div class="flex items-center">
+                            <button type="button" class="qty-btn" onclick="this.nextElementSibling.value = Math.max(1, parseInt(this.nextElementSibling.value) - 1)">-</button>
+                            <input type="number" name="quantity" value="1" min="1" class="qty-input focus:outline-none" style="text-align: center;">
+                            <button type="button" class="qty-btn" onclick="this.previousElementSibling.value = parseInt(this.previousElementSibling.value) + 1">+</button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Action Buttons -->
-                <div class="flex flex-col space-y-3">
-                    <button class="bg-red-800 text-white font-semibold py-3 rounded-full shadow-md hover:bg-red-700 transition duration-200">
-                        Thêm vào giỏ
-                    </button>
-                    <!-- Liên kết đến trang giỏ hàng/danh sách sản phẩm -->
-                    <a href="products_list.php" class="bg-gray-300 text-stone-800 font-semibold py-3 rounded-full text-center shadow-md hover:bg-gray-400 transition duration-200">
-                        Mua hàng (Đi đến giỏ)
-                    </a>
-                </div>
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col space-y-3">
+                        <!-- Nút Thêm vào giỏ (Submit form) -->
+                        <button type="submit" class="bg-red-800 text-white font-semibold py-3 rounded-full shadow-md hover:bg-red-700 transition duration-200">
+                            Thêm vào giỏ
+                        </button>
+                        <!-- Nút Mua hàng (Chuyển hướng dựa trên trạng thái đăng nhập) -->
+                        <?php 
+                            // Nếu chưa đăng nhập, nút này sẽ trỏ về login.php
+                            $checkout_link = $is_logged_in ? 'products_list.php' : 'login.php';
+                        ?>
+                        <a href="<?php echo $checkout_link; ?>" class="bg-gray-300 text-stone-800 font-semibold py-3 rounded-full text-center shadow-md hover:bg-gray-400 transition duration-200">
+                            Mua hàng (Đi đến giỏ)
+                        </a>
+                    </div>
+                </form>
             </div>
         </main>
     </div>
 </body>
 </html>
-<?php
-// Logic PHP để tải thông tin chi tiết sản phẩm dựa trên ID.
-?>
