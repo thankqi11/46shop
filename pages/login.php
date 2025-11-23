@@ -13,6 +13,7 @@
 <body class="min-h-screen bg-stone-900 flex flex-col">
     <!-- Header/Title Bar (Dark Brown/Black) -->
     <header class="bg-red-950 text-white shadow-lg p-5">
+        
         <h1 class="text-3xl font-bold text-center">Shop Bán Đồ Thể Thao</h1>
     </header>
 
