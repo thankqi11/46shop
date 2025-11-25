@@ -45,8 +45,8 @@ $is_logged_in = isset($_SESSION['user_id']);
             
             <!-- Logo/Placeholder -->
             <div class="flex items-center space-x-4">
-                <div class="w-16 h-16 bg-red-700 rounded-full border-2 border-red-500">
-                    <img src="
+                <div class="w-20 h-16 bg-red-700 rounded-full border-5 border-red-500">
+                    <img src="images/logo.jpg">
                 </div>
                 <!-- Login/Register Link (Top Right - Mobile Only) -->
                 <?php if ($is_logged_in): ?>

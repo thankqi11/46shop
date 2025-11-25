@@ -37,12 +37,12 @@
                     <!-- Login Button -->
                     <button type="submit" 
                             class="text-lg font-semibold text-white bg-red-800 hover:bg-red-700 py-2 px-6 rounded-full shadow-md transition duration-200">
-                        đăng nhập
+                        Đăng nhập
                     </button>
                     
                     <!-- Forgot Password Link -->
                     <a href="#" class="text-stone-700 hover:text-red-700 text-lg underline">
-                        quên mật khẩu
+                        Quên mật khẩu
                     </a>
                 </div>
             </form>

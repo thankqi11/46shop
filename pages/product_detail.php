@@ -86,26 +86,26 @@ $is_logged_in = isset($_SESSION['user_id']);
 $products = [
     'A' => [
         'name' => 'Quần Thể Thao Cao Cấp',
-        'price' => 500000,
-        'price_format' => '500.000 VNĐ',
+        'price' => 150000,
+        'price_format' => '150.000 VNĐ',
         'desc' => 'Quần short tập luyện chuyên nghiệp, chất liệu co giãn 4 chiều, thoáng khí, phù hợp cho gym và chạy bộ.',
         'image' => 'images/quan_the_thao.jpg',
         'sizes' => ['S', 'M', 'L', 'XL']
     ],
     'B' => [
         'name' => 'Áo Thun Thể Thao Coolmax',
-        'price' => 850000,
-        'price_format' => '850.000 VNĐ',
+        'price' => 250000,
+        'price_format' => '250.000 VNĐ',
         'desc' => 'Áo thun công nghệ Coolmax giúp thấm hút mồ hôi cực nhanh, giữ cơ thể luôn khô thoáng. Thiết kế thời trang, năng động.',
         'image' => 'images/ao_thun_the_thao.jpg',
         'sizes' => ['M', 'L', 'XL']
     ],
     'C' => [
         'name' => 'Mũ Lưỡi Trai Logo Thêu',
-        'price' => 1200000,
-        'price_format' => '1.200.000 VNĐ',
+        'price' => 150000,
+        'price_format' => '150.000 VNĐ',
         'desc' => 'Mũ lưỡi trai phong cách cổ điển, chất liệu cotton dày dặn, logo thêu tinh tế. Bảo vệ khỏi ánh nắng khi luyện tập ngoài trời.',
-        'image' => 'images/mu_luoi_trai.jpg',
+        'image' => 'images/Mu-the-thao.jpg',
         'sizes' => ['Freesize']
     ]
 ];
@@ -175,8 +175,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart']) && $cur
             
             <!-- Logo/Placeholder -->
             <div class="flex items-center space-x-4">
-                <a href="index.php" class="w-16 h-16 bg-red-700 rounded-full border-2 border-red-500">
-                    <!-- Logo Placeholder -->
+                <a href="index.php" class="w-20 h-16 bg-red-700 rounded-full border-2 border-red-500">
+                    <img src="images/logo.jpg">
                 </a>
             </div>
 

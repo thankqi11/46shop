@@ -86,8 +86,8 @@ foreach ($cart as $item) {
             
             <!-- Logo/Placeholder -->
             <div class="flex items-center space-x-4">
-                <a href="index.php" class="w-16 h-16 bg-red-700 rounded-full border-2 border-red-500">
-                    <!-- Logo Placeholder -->
+                <a href="index.php" class="w-20 h-16 bg-red-700 rounded-full border-2 border-red-500">
+                    <img src="images/logo.jpg">
                 </a>
             </div>
 

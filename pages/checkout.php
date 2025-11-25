@@ -65,12 +65,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['place_order'])) {
     <header class="checkout-header p-4 shadow-xl">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <!-- Logo/Placeholder -->
-            <a href="index.php" class="w-16 h-16 bg-red-700 rounded-full border-2 border-red-500">
-                <!-- Logo Placeholder -->
+            <a href="index.php" class="w-20 h-16 bg-red-700 rounded-full border-2 border-red-500">
+                <img src="images/logo.jpg">
             </a>
             <!-- Tên SHOP Placeholder -->
             <div class="flex-grow max-w-2xl mx-4 bg-gray-300 p-4 text-center rounded-lg shadow-inner">
-                <h1 class="text-2xl font-bold text-stone-800">Tên SHOP</h1>
+                <h1 class="text-2xl font-bold text-stone-800">Shop thể thao</h1>
             </div>
             <!-- Empty Space to balance layout -->
             <div class="w-16 h-16"></div>
