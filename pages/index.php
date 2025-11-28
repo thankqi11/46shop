@@ -133,7 +133,7 @@ $is_logged_in = isset($_SESSION['user_id']);
                         <div class="bg-green-600 text-white p-3 font-semibold text-lg">Quần Thể Thao</div>
                         <div class="p-4 space-y-3">
                             <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg overflow-hidden">
-                                <img src="images/Quan-the-thao.jpg">
+                                <img src="images/quan_the_thao.jpg">
                             </div>
                             <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 150.000 VNĐ</div>
                             <a href="product_detail.php?id=A" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
@@ -145,7 +145,7 @@ $is_logged_in = isset($_SESSION['user_id']);
                         <div class="bg-green-600 text-white p-3 font-semibold text-lg">Áo Thun Thể Thao</div>
                         <div class="p-4 space-y-3">
                             <div class="h-32 bg-white border border-gray-300 flex items-center justify-center rounded-lg overflow-hidden">
-                                <img src="images/Ao-the_thao.png">
+                                <img src="images/ao_thun_the_thao.jpg">
                             </div>
                             <div class="bg-yellow-400 text-stone-800 font-bold p-1 rounded-md">Giá tiền: 200.000 VNĐ</div>
                             <a href="product_detail.php?id=B" class="text-red-700 font-semibold hover:text-red-900 underline">Xem chi tiết</a>
