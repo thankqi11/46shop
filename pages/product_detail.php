@@ -1,195 +1,160 @@
+<?php
+session_start();
+require_once 'db_connect.php';
+
+// Kiểm tra MaSP
+if (!isset($_GET['MaSP']) || !is_numeric($_GET['MaSP'])) {
+    die("Sản phẩm không tồn tại!");
+}
+
+$maSP = (int)$_GET['MaSP'];
+
+// Lấy thông tin sản phẩm
+$sql = "SELECT * FROM sanpham WHERE MaSP = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $maSP);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows == 0) {
+    die("Sản phẩm không tìm thấy!");
+}
+
+$product = $result->fetch_assoc();
+
+// --- SỬA LẠI: LẤY NGUYÊN GỐC ĐƯỜNG DẪN TỪ DB (Giống file index cũ) ---
+// Không dùng ltrim hay kiểm tra file_exists nữa
+$img_src = $product['HinhAnh'];
+
+// Chỉ dùng ảnh thay thế nếu trong DB hoàn toàn không có gì
+if (empty($img_src)) {
+    $img_src = "https://via.placeholder.com/400";
+}
+// --------------------------------------------------------------------
+
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi Tiết Sản Phẩm</title>
+    <title><?= htmlspecialchars($product['TenSP']) ?> - Chi tiết</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #333; }
-        .product-image-box { background-color: #e0e0e0; }
-        .size-option {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.15s;
-        }
-        .size-option:hover, .size-option.selected {
-            border-color: #b91c1c; /* Red-700 */
-            background-color: #fee2e2; /* Red-100 */
-        }
-        .qty-input {
-            width: 50px; 
-            text-align: center;
-            border: 1px solid #ccc;
-            height: 35px;
-            font-size: 16px;
-        }
-        .qty-btn {
-            background-color: #f0f0f0;
-            border: 1px solid #ccc;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            user-select: none;
-            font-size: 1.25rem;
-        }
-        
-        /* Bố cục chính tương tự trang index.php */
-        .main-grid {
-            grid-template-columns: 180px 1fr;
-        }
-        @media (max-width: 768px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
+        /* Ẩn mũi tên mặc định của input number */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
         }
     </style>
-    <script>
-        function selectSize(element) {
-            // Remove 'selected' class from all size options
-            document.querySelectorAll('.size-option').forEach(el => {
-                el.classList.remove('selected', 'border-red-700', 'bg-red-100');
-            });
-            // Add 'selected' class to the clicked element
-            element.classList.add('selected', 'border-red-700', 'bg-red-100');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Select the first size option by default
-            const firstSize = document.querySelector('.size-option');
-            if (firstSize) {
-                selectSize(firstSize);
-            }
-        });
-    </script>
 </head>
-<body class="min-h-screen bg-stone-900">
+<body class="min-h-screen bg-stone-900 text-stone-200">
 
-    <!-- Top Header (Dark Red/Brown) -->
-    <header class="bg-red-950 p-4 shadow-xl">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            
-            <!-- Logo/Placeholder -->
-            <div class="flex items-center space-x-4">
-                <a href="index.php" class="w-16 h-16 bg-red-700 rounded-full border-2 border-red-500">
-                    <!-- Logo Placeholder -->
-                </a>
-            </div>
-
-            <!-- Search Bar -->
-            <div class="flex-grow max-w-xl mx-4 w-full md:w-auto">
-                <div class="flex rounded-lg overflow-hidden shadow-inner bg-gray-300">
-                    <input type="text" placeholder="Tìm kiếm sản phẩm" 
-                           class="w-full p-3 text-lg bg-transparent focus:outline-none placeholder-gray-600 text-stone-900">
-                    <button class="bg-stone-900 text-white p-3 px-6 hover:bg-stone-700 transition duration-150">
-                        <!-- Icon Placeholder -->
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </button>
-                    <div class="w-10 bg-white border-l border-gray-400"></div>
-                </div>
-            </div>
-
-            <!-- Auth Links -->
-            <div class="flex space-x-2">
-                <a href="register.php" class="text-white font-semibold hover:text-red-300 p-2 text-sm border border-white/20 rounded-lg transition duration-200">
-                    Đăng ký
-                </a>
-                <a href="login.php" class="text-white font-semibold hover:text-red-300 p-2 text-sm border border-white/20 rounded-lg transition duration-200">
-                    Đăng nhập
-                </a>
-            </div>
+    <header class="bg-red-950 p-4 shadow-xl text-white flex justify-between items-center">
+        <div class="font-bold text-xl"><a href="index.php">← Quay lại Shop</a></div>
+        
+        <div class="relative">
+            <a href="cart.php" class="bg-yellow-500 text-stone-900 px-4 py-2 rounded font-bold hover:bg-yellow-400 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                </svg>
+                Giỏ hàng
+            </a>
         </div>
     </header>
 
-    <!-- Main Content Grid -->
-    <div class="max-w-7xl mx-auto grid main-grid gap-4 p-4">
-        
-        <!-- Left Sidebar (Navigation) -->
-        <aside class="space-y-4 bg-red-950/90 p-4 rounded-xl md:p-0 md:bg-transparent">
-            <!-- Navigation Items -->
-            <nav class="space-y-3">
-                <a href="#" class="block bg-red-800 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-150 shadow-md">Giày</a>
-                <a href="#" class="block bg-red-800 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-150 shadow-md">Quần</a>
-                <a href="#" class="block bg-red-800 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-150 shadow-md">Áo</a>
-                <a href="#" class="block bg-red-800 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-150 shadow-md">Mũ</a>
-                <a href="#" class="block bg-red-800 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-150 shadow-md">Phụ kiện</a>
-            </nav>
+    <main class="max-w-6xl mx-auto p-8">
+        <div class="bg-stone-800 rounded-xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
             
-            <!-- Contact Info -->
-            <div class="pt-6 text-white text-sm">
-                <p class="font-bold">Thông tin liên lạc</p>
-                <p>0522 222 333</p>
+            <div class="md:w-1/2 p-8 bg-white flex items-center justify-center">
+                <img src="<?= $img_src ?>" alt="<?= htmlspecialchars($product['TenSP']) ?>" class="max-h-[500px] object-contain hover:scale-105 transition duration-300">
             </div>
-        </aside>
 
-        <!-- Product Detail Area -->
-        <main class="bg-white p-6 rounded-xl shadow-inner space-y-6 flex flex-col lg:flex-row lg:space-x-6">
-            
-            <!-- Left Column: Image and Details -->
-            <div class="w-full lg:w-2/3 space-y-4">
-                <div class="product-image-box h-80 flex items-center justify-center rounded-lg shadow-md">
-                    <p class="text-lg font-semibold">*Hình ảnh sản phẩm A</p>
+            <div class="md:w-1/2 p-8 space-y-6">
+                <h1 class="text-4xl font-bold text-white"><?= htmlspecialchars($product['TenSP']) ?></h1>
+                <p class="text-3xl text-red-500 font-bold"><?= number_format($product['Gia'], 0, ',', '.') ?> VNĐ</p>
+                
+                <div class="text-stone-400">
+                    <h3 class="font-bold text-white mb-2">Mô tả sản phẩm:</h3>
+                    <p><?= nl2br(htmlspecialchars($product['ChiTietSP'])) ?></p>
                 </div>
-                <h3 class="text-xl font-bold text-stone-800 border-b pb-2">Chi tiết sản phẩm</h3>
-                <p class="text-sm text-gray-700">Đây là khu vực mô tả chi tiết về sản phẩm A, bao gồm chất liệu, xuất xứ, tính năng nổi bật, và hướng dẫn sử dụng. Sản phẩm này là mẫu mới nhất trong bộ sưu tập Thu Đông 2025.</p>
-                <ul class="list-disc list-inside text-sm text-gray-700 pl-4">
-                    <li>Chất liệu: Cotton cao cấp, thoáng khí.</li>
-                    <li>Màu sắc: Đỏ, Xanh, Đen.</li>
-                    <li>Bảo hành: 12 tháng chính hãng.</li>
-                </ul>
-            </div>
-            
-            <!-- Right Column: Options and Actions -->
-            <div class="w-full lg:w-1/3 space-y-6 pt-4 lg:pt-0">
-                <h2 class="text-2xl font-extrabold text-stone-900 border-b pb-2">Sản Phẩm A</h2>
-                <p class="text-xl font-bold text-red-700">Giá: 500.000 VNĐ</p>
 
-                <!-- Size Selection -->
-                <div class="space-y-2">
-                    <p class="font-semibold text-stone-700">Size:</p>
-                    <div class="flex space-x-2">
-                        <div class="size-option" onclick="selectSize(this)">S</div>
-                        <div class="size-option" onclick="selectSize(this)">M</div>
-                        <div class="size-option" onclick="selectSize(this)">L</div>
-                        <div class="size-option" onclick="selectSize(this)">XL</div>
+                <form action="cart.php" method="POST" class="space-y-6 border-t border-stone-600 pt-6">
+                    <input type="hidden" name="action" value="add">
+                    <input type="hidden" name="maSP" value="<?= $product['MaSP'] ?>">
+                    <input type="hidden" name="tenSP" value="<?= $product['TenSP'] ?>">
+                    <input type="hidden" name="gia" value="<?= $product['Gia'] ?>">
+                    <input type="hidden" name="hinhAnh" value="<?= $img_src ?>"> <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block mb-2 font-bold">Size:</label>
+                            <select name="size" class="w-full p-3 rounded bg-stone-700 border border-stone-600 text-white focus:border-red-500 outline-none">
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="One Size">One Size</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-2 font-bold">Màu sắc:</label>
+                            <select name="mau" class="w-full p-3 rounded bg-stone-700 border border-stone-600 text-white focus:border-red-500 outline-none">
+                                <option value="Trắng">Trắng</option>
+                                <option value="Đen">Đen</option>
+                                <option value="Đỏ">Đỏ</option>
+                                <option value="Xanh">Xanh</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Quantity Control -->
-                <div class="space-y-2">
-                    <p class="font-semibold text-stone-700">Số lượng:</p>
-                    <div class="flex items-center">
-                        <button class="qty-btn" onclick="this.nextElementSibling.value = Math.max(1, parseInt(this.nextElementSibling.value) - 1)">-</button>
-                        <input type="number" value="1" min="1" class="qty-input focus:outline-none" style="text-align: center;">
-                        <button class="qty-btn" onclick="this.previousElementSibling.value = parseInt(this.previousElementSibling.value) + 1">+</button>
+                    <div>
+                        <label class="block mb-2 font-bold">Số lượng:</label>
+                        <div class="flex items-center">
+                            <button type="button" onclick="decreaseQty()" class="bg-stone-600 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-l border-r border-stone-500 transition">-</button>
+                            <input type="number" id="soLuongInput" name="soLuong" value="1" min="1" max="10" 
+                                   class="w-16 p-3 bg-stone-700 text-white text-center focus:outline-none" readonly>
+                            <button type="button" onclick="increaseQty()" class="bg-stone-600 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-r border-l border-stone-500 transition">+</button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Action Buttons -->
-                <div class="flex flex-col space-y-3">
-                    <button class="bg-red-800 text-white font-semibold py-3 rounded-full shadow-md hover:bg-red-700 transition duration-200">
-                        Thêm vào giỏ
+                    <button type="submit" class="w-full bg-red-700 hover:bg-red-600 text-white font-bold py-4 rounded-lg shadow-lg text-lg transition transform active:scale-95">
+                        THÊM VÀO GIỎ HÀNG
                     </button>
-                    <!-- Liên kết đến trang giỏ hàng/danh sách sản phẩm -->
-                    <a href="products_list.php" class="bg-gray-300 text-stone-800 font-semibold py-3 rounded-full text-center shadow-md hover:bg-gray-400 transition duration-200">
-                        Mua hàng (Đi đến giỏ)
-                    </a>
-                </div>
+                </form>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
+
+    <script>
+        // Tăng số lượng
+        function increaseQty() {
+            var input = document.getElementById('soLuongInput');
+            var value = parseInt(input.value, 10);
+            if (value < 10) { 
+                input.value = value + 1;
+            }
+        }
+
+        // Giảm số lượng
+        function decreaseQty() {
+            var input = document.getElementById('soLuongInput');
+            var value = parseInt(input.value, 10);
+            if (value > 1) { 
+                input.value = value - 1;
+            }
+        }
+
+        // Hiển thị thông báo Alert nếu URL có ?status=success
+        // (Điều kiện: file cart.php phải redirect về đây kèm tham số này)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('status') === 'success') {
+            alert('✅ Thêm vào giỏ hàng thành công!');
+            
+            // Xóa tham số trên URL để nhìn cho đẹp (không bắt buộc)
+            const newUrl = window.location.pathname + "?MaSP=" + urlParams.get('MaSP');
+            window.history.replaceState(null, null, newUrl);
+        }
+    </script>
 </body>
 </html>
-<?php
-// Logic PHP để tải thông tin chi tiết sản phẩm dựa trên ID.
-?>

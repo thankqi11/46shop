@@ -1,3 +1,13 @@
+<?php
+// 1. Nhúng file kết nối CSDL vào
+require_once 'db_connect.php'; 
+
+// 2. Định nghĩa câu lệnh SQL
+$sql = "SELECT MaSP, TenSP, Gia FROM SanPham WHERE TrangThai = 1 LIMIT 10";
+
+// 3. Thực thi truy vấn
+$result = $conn->query($sql);
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -103,20 +113,14 @@
         <main class="bg-gray-200 p-6 rounded-xl shadow-inner space-y-4">
             
             <!-- Product Item A -->
-            <div class="product-item p-4 rounded-lg flex flex-col md:flex-row justify-between items-center shadow-md">
-                <div class="w-full md:w-1/3 space-y-1">
-                    <p class="text-lg font-bold">Sản phẩm A</p>
-                    <p class="text-sm font-medium">Giá tiền: 500.000 VNĐ</p>
-                </div>
-                <div class="flex items-center space-x-4 mt-4 md:mt-0">
-                    <p class="text-sm">Số lượng:</p>
-                    <div class="flex border rounded-lg overflow-hidden">
-                        <button class="qty-btn text-red-600">-</button>
-                        <input type="text" value="1" class="qty-input focus:outline-none">
-                        <button class="qty-btn text-green-600">+</button>
-                    </div>
-                </div>
-            </div>
+            <?php 
+            if ($result->num_rows > 0){
+                while ($row = $result->fetch_assoc()) {
+                    
+                    echo "<h2>" . htmlspecialchars($row['TenSP']) . "</h2>";
+                }
+            }
+            ?>
 
             <!-- Product Item B -->
             <div class="product-item p-4 rounded-lg flex flex-col md:flex-row justify-between items-center shadow-md">
